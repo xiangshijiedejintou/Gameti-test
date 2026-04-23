@@ -5,7 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>测测你的游戏人格</title>
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       font-family: "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
@@ -13,12 +16,14 @@
       color: #fff;
       min-height: 100vh;
     }
+
     .container {
       width: 100%;
       max-width: 860px;
       margin: 0 auto;
       padding: 24px 16px 48px;
     }
+
     .card {
       background: rgba(255,255,255,0.08);
       border: 1px solid rgba(255,255,255,0.12);
@@ -27,6 +32,7 @@
       box-shadow: 0 12px 40px rgba(0,0,0,0.28);
       backdrop-filter: blur(10px);
     }
+
     .title {
       font-size: 34px;
       font-weight: 800;
@@ -34,6 +40,7 @@
       text-align: center;
       margin: 8px 0 12px;
     }
+
     .subtitle {
       text-align: center;
       color: rgba(255,255,255,0.78);
@@ -41,6 +48,7 @@
       line-height: 1.8;
       margin-bottom: 24px;
     }
+
     .desc-list {
       margin: 0;
       padding-left: 18px;
@@ -48,6 +56,7 @@
       line-height: 1.9;
       font-size: 15px;
     }
+
     .btn {
       display: inline-flex;
       justify-content: center;
@@ -61,29 +70,49 @@
       font-size: 16px;
       font-weight: 700;
       cursor: pointer;
-      transition: transform .18s ease, opacity .18s ease;
+      transition: transform .18s ease, opacity .18s ease, background .18s ease;
       padding: 0 22px;
     }
-    .btn:hover { transform: translateY(-1px); }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
     .btn:disabled {
       opacity: 0.45;
       cursor: not-allowed;
       transform: none;
     }
-    .center { text-align: center; }
-    .hidden { display: none; }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: #fff;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .hidden {
+      display: none;
+    }
 
     .progress-wrap {
       margin-bottom: 18px;
     }
+
     .progress-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 12px;
       font-size: 14px;
       color: rgba(255,255,255,0.8);
       margin-bottom: 8px;
+      flex-wrap: wrap;
     }
+
     .progress-bar {
       width: 100%;
       height: 10px;
@@ -91,6 +120,7 @@
       border-radius: 999px;
       overflow: hidden;
     }
+
     .progress-inner {
       height: 100%;
       width: 0%;
@@ -110,6 +140,7 @@
       border-radius: 999px;
       margin-bottom: 14px;
     }
+
     .question {
       font-size: 26px;
       font-weight: 800;
@@ -121,6 +152,7 @@
       display: grid;
       gap: 12px;
     }
+
     .option-btn {
       width: 100%;
       text-align: left;
@@ -134,10 +166,18 @@
       font-size: 15px;
       line-height: 1.6;
     }
+
     .option-btn:hover {
       border-color: rgba(124,92,255,0.6);
       background: rgba(124,92,255,0.14);
     }
+
+    .option-btn.selected {
+      border-color: rgba(124,92,255,0.85);
+      background: rgba(124,92,255,0.22);
+      box-shadow: 0 0 0 1px rgba(124,92,255,0.25) inset;
+    }
+
     .option-label {
       font-weight: 800;
       color: #cfc8ff;
@@ -152,12 +192,14 @@
       margin-top: 4px;
       margin-bottom: 8px;
     }
+
     .result-name {
       font-size: 40px;
       font-weight: 900;
       text-align: center;
       margin-bottom: 10px;
     }
+
     .result-type {
       text-align: center;
       font-size: 15px;
@@ -165,6 +207,7 @@
       margin-bottom: 22px;
       line-height: 1.8;
     }
+
     .result-block {
       background: rgba(255,255,255,0.06);
       border: 1px solid rgba(255,255,255,0.08);
@@ -172,23 +215,27 @@
       padding: 18px;
       margin-bottom: 14px;
     }
+
     .result-block h3 {
       margin: 0 0 10px;
       font-size: 16px;
       color: #d7d2ff;
     }
+
     .result-block p {
       margin: 0;
       color: rgba(255,255,255,0.9);
       line-height: 1.9;
       font-size: 15px;
     }
+
     .tag-list {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       margin-top: 4px;
     }
+
     .tag {
       padding: 8px 12px;
       border-radius: 999px;
@@ -196,6 +243,97 @@
       border: 1px solid rgba(73,166,255,0.3);
       color: #dbeeff;
       font-size: 14px;
+    }
+
+    .dimension-chart {
+      display: grid;
+      gap: 18px;
+      margin-top: 6px;
+    }
+
+    .dim-row {
+      display: grid;
+      gap: 8px;
+    }
+
+    .dim-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.92);
+      line-height: 1.6;
+      flex-wrap: wrap;
+    }
+
+    .dim-head strong {
+      color: #fff;
+      font-size: 15px;
+    }
+
+    .dim-score {
+      color: #cfc8ff;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .bar-wrap {
+      display: grid;
+      grid-template-columns: 52px 1fr 52px;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .bar-label {
+      font-size: 13px;
+      color: rgba(255,255,255,0.72);
+      text-align: center;
+    }
+
+    .bar-track {
+      position: relative;
+      height: 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.1);
+      overflow: hidden;
+    }
+
+    .bar-fill-left,
+    .bar-fill-right {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      transition: width .35s ease;
+    }
+
+    .bar-fill-left {
+      left: 0;
+      background: linear-gradient(90deg, #7c5cff, #9b7bff);
+      border-radius: 999px 0 0 999px;
+    }
+
+    .bar-fill-right {
+      right: 0;
+      background: linear-gradient(90deg, #49a6ff, #72c3ff);
+      border-radius: 0 999px 999px 0;
+    }
+
+    .bar-center-line {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 2px;
+      height: 100%;
+      transform: translateX(-50%);
+      background: rgba(255,255,255,0.4);
+      z-index: 2;
+    }
+
+    .dim-note {
+      font-size: 13px;
+      color: rgba(255,255,255,0.72);
+      line-height: 1.6;
     }
 
     .footer {
@@ -206,10 +344,25 @@
     }
 
     @media (max-width: 640px) {
-      .title { font-size: 28px; }
-      .question { font-size: 22px; }
-      .result-name { font-size: 32px; }
-      .card { padding: 22px 16px; }
+      .title {
+        font-size: 28px;
+      }
+
+      .question {
+        font-size: 22px;
+      }
+
+      .result-name {
+        font-size: 32px;
+      }
+
+      .card {
+        padding: 22px 16px;
+      }
+
+      .bar-wrap {
+        grid-template-columns: 46px 1fr 46px;
+      }
     }
   </style>
 </head>
@@ -253,6 +406,10 @@
       <div id="questionText" class="question"></div>
 
       <div class="options" id="optionsWrap"></div>
+
+      <div class="center" style="margin-top: 22px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+        <button class="btn btn-secondary" id="prevBtn" onclick="goPrev()">上一题</button>
+      </div>
     </section>
 
     <!-- 结果页 -->
@@ -276,11 +433,14 @@
         <p id="resultDims"></p>
       </div>
 
+      <div class="result-block">
+        <h3>四维倾向图</h3>
+        <div id="dimensionChart" class="dimension-chart"></div>
+      </div>
+
       <div class="center" style="margin-top: 24px;">
         <button class="btn" onclick="restartTest()">重新测试</button>
       </div>
-
-      <div class="footer">copyright@向世界的尽头-</div>
     </section>
   </div>
 
@@ -421,7 +581,7 @@
       "目标-共行-主线-谋略": {
         name: "指挥官",
         desc: "重视团队结果，擅长在合作环境中统筹节奏、分配任务、安排路线。更享受“把一局打明白、把一队带起来”的成就感。",
-        traits: ["组织力强", "规划清晰", "擅长协作推进", "全局意识强"]
+        traits: ["组织力强", "规划清晰", "擅长协作推进"]
       },
       "目标-共行-漫游-即兴": {
         name: "游骑兵",
@@ -464,124 +624,3 @@
         traits: ["耐心", "稳妥", "照顾型", "体验组织者"]
       },
       "体验-共行-漫游-即兴": {
-        name: "乐子人",
-        desc: "游戏对他们来说首先是快乐的现场。喜欢和朋友一起乱逛、整活、尝试各种意想不到的玩法，在互动中制造即时乐趣。",
-        traits: ["活跃", "松弛", "好玩", "氛围制造者"]
-      },
-      "体验-共行-漫游-谋略": {
-        name: "筑梦师",
-        desc: "喜欢与他人共同创造独特体验，比如建造、组织活动、设计玩法、营造空间与氛围。相比单纯完成任务，更在意共同创造什么。",
-        traits: ["有想法", "善组织", "重创造", "社群体验型"]
-      }
-    };
-
-    let currentIndex = 0;
-    let answers = [];
-    let scores = {
-      experience: 0,
-      goal: 0,
-      solo: 0,
-      group: 0,
-      main: 0,
-      wander: 0,
-      improv: 0,
-      strategy: 0
-    };
-
-    function startTest() {
-      document.getElementById("homeScreen").classList.add("hidden");
-      document.getElementById("resultScreen").classList.add("hidden");
-      document.getElementById("quizScreen").classList.remove("hidden");
-
-      currentIndex = 0;
-      answers = [];
-      scores = {
-        experience: 0,
-        goal: 0,
-        solo: 0,
-        group: 0,
-        main: 0,
-        wander: 0,
-        improv: 0,
-        strategy: 0
-      };
-
-      renderQuestion();
-    }
-
-    function renderQuestion() {
-      const q = questions[currentIndex];
-      document.getElementById("progressText").innerText = `第 ${currentIndex + 1} 题 / 共 ${questions.length} 题`;
-      document.getElementById("dimText").innerText = `维度：${q.dim}`;
-      document.getElementById("qBadge").innerText = `题目 ${q.id}`;
-      document.getElementById("questionText").innerText = q.text;
-      document.getElementById("progressInner").style.width = `${((currentIndex) / questions.length) * 100}%`;
-
-      const wrap = document.getElementById("optionsWrap");
-      wrap.innerHTML = "";
-
-      options.forEach((op, idx) => {
-        const btn = document.createElement("button");
-        btn.className = "option-btn";
-        btn.innerHTML = `<span class="option-label">${idx + 1}.</span>${op.label}`;
-        btn.onclick = () => selectAnswer(op.value);
-        wrap.appendChild(btn);
-      });
-    }
-
-    function selectAnswer(value) {
-      const q = questions[currentIndex];
-      answers.push({ id: q.id, axis: q.axis, value });
-      scores[q.axis] += value;
-
-      currentIndex++;
-
-      if (currentIndex < questions.length) {
-        renderQuestion();
-      } else {
-        document.getElementById("progressInner").style.width = `100%`;
-        showResult();
-      }
-    }
-
-    function showResult() {
-      const dim1 = scores.experience >= scores.goal ? "体验" : "目标";
-      const dim2 = scores.solo >= scores.group ? "独行" : "共行";
-      const dim3 = scores.main >= scores.wander ? "主线" : "漫游";
-      const dim4 = scores.improv >= scores.strategy ? "即兴" : "谋略";
-
-      const key = `${dim1}-${dim2}-${dim3}-${dim4}`;
-      const result = resultMap[key];
-
-      document.getElementById("quizScreen").classList.add("hidden");
-      document.getElementById("resultScreen").classList.remove("hidden");
-
-      document.getElementById("resultName").innerText = result.name;
-      document.getElementById("resultType").innerHTML = `${dim1} × ${dim2} × ${dim3} × ${dim4}`;
-      document.getElementById("resultDesc").innerText = result.desc;
-      document.getElementById("resultDims").innerHTML = `
-        你的结果倾向为：<br>
-        <b>${dim1}</b> / ${dim1 === "体验" ? "目标" : "体验"}<br>
-        <b>${dim2}</b> / ${dim2 === "独行" ? "共行" : "独行"}<br>
-        <b>${dim3}</b> / ${dim3 === "主线" ? "漫游" : "主线"}<br>
-        <b>${dim4}</b> / ${dim4 === "即兴" ? "谋略" : "即兴"}
-      `;
-
-      const tagWrap = document.getElementById("resultTags");
-      tagWrap.innerHTML = "";
-      result.traits.forEach(tag => {
-        const span = document.createElement("span");
-        span.className = "tag";
-        span.innerText = tag;
-        tagWrap.appendChild(span);
-      });
-    }
-
-    function restartTest() {
-      document.getElementById("resultScreen").classList.add("hidden");
-      document.getElementById("homeScreen").classList.remove("hidden");
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  </script>
-</body>
-</html>
