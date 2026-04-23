@@ -95,7 +95,7 @@
     }
 
     .hidden {
-      display: none;
+      display: none !important;
     }
 
     .progress-wrap {
@@ -184,6 +184,14 @@
       margin-right: 8px;
     }
 
+    .action-row {
+      margin-top: 22px;
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
     .result-title {
       font-size: 14px;
       letter-spacing: 1px;
@@ -196,14 +204,13 @@
     .result-name {
       font-size: 40px;
       font-weight: 900;
-      text-align: center;
-      margin-bottom: 10px;
+ 15px;
+      color: rgba(255,255,255,0.78);
+      margin-bottom: 22px;
+      line-height: 1.8;
     }
 
-    .result-type {
-      text-align: center;
-      font-size: 15px;
-      color: rgba(255,255,255,0.78);
+    .result-block {
       margin-bottom: 22px;
       line-height: 1.8;
     }
@@ -295,7 +302,7 @@
       position: relative;
       height: 14px;
       border-radius: 999px;
-      background: rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.12);
       overflow: hidden;
     }
 
@@ -311,12 +318,14 @@
       left: 0;
       background: linear-gradient(90deg, #7c5cff, #9b7bff);
       border-radius: 999px 0 0 999px;
+      z-index: 1;
     }
 
     .bar-fill-right {
       right: 0;
       background: linear-gradient(90deg, #49a6ff, #72c3ff);
       border-radius: 0 999px 999px 0;
+      z-index: 1;
     }
 
     .bar-center-line {
@@ -326,8 +335,8 @@
       width: 2px;
       height: 100%;
       transform: translateX(-50%);
-      background: rgba(255,255,255,0.4);
-      z-index: 2;
+      background: rgba(255,255,255,0.6);
+      z-index: 3;
     }
 
     .dim-note {
@@ -363,6 +372,10 @@
       .bar-wrap {
         grid-template-columns: 46px 1fr 46px;
       }
+
+      .btn {
+        min-width: 120px;
+      }
     }
   </style>
 </head>
@@ -395,7 +408,6 @@
       <div class="progress-wrap">
         <div class="progress-top">
           <span id="progressText">第 1 题 / 共 16 题</span>
-          <span id="dimText">维度：体验 / 目标</span>
         </div>
         <div class="progress-bar">
           <div id="progressInner" class="progress-inner"></div>
@@ -407,8 +419,8 @@
 
       <div class="options" id="optionsWrap"></div>
 
-      <div class="center" style="margin-top: 22px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-        <button class="btn btn-secondary" id="prevBtn" onclick="goPrev()">上一题</button>
+      <div class="action-row">
+        <button class="btn btn-secondary" id="prevBtn" type="button" onclick="goPrev()">上一题</button>
       </div>
     </section>
 
@@ -446,102 +458,25 @@
 
   <script>
     const questions = [
-      {
-        id: 1,
-        dim: "体验 / 目标",
-        axis: "experience",
-        text: "比起尽快通关或变强，我更在意游戏过程是否让我觉得有趣、沉浸。"
-      },
-      {
-        id: 2,
-        dim: "体验 / 目标",
-        axis: "goal",
-        text: "玩游戏时，我通常会很在意任务完成、战力成长或阶段成果。"
-      },
-      {
-        id: 3,
-        dim: "体验 / 目标",
-        axis: "experience",
-        text: "即使奖励不高，只要某段剧情、场景或互动体验让我喜欢，我也愿意花时间停留。"
-      },
-      {
-        id: 4,
-        dim: "体验 / 目标",
-        axis: "goal",
-        text: "我更容易因为“还有目标没达成”而继续玩，而不是单纯因为享受当下过程。"
-      },
-      {
-        id: 5,
-        dim: "独行 / 共行",
-        axis: "solo",
-        text: "大多数时候，我更喜欢按自己的节奏一个人玩游戏。"
-      },
-      {
-        id: 6,
-        dim: "独行 / 共行",
-        axis: "group",
-        text: "如果有合适的搭子或队友，我会觉得一起玩比自己玩更有意思。"
-      },
-      {
-        id: 7,
-        dim: "独行 / 共行",
-        axis: "solo",
-        text: "遇到新内容时，我通常更想先自己摸索，而不是立刻和别人一起推进。"
-      },
-      {
-        id: 8,
-        dim: "独行 / 共行",
-        axis: "group",
-        text: "对我来说，游戏中的陪伴感、配合感或一起经历某件事，本身就是乐趣来源。"
-      },
-      {
-        id: 9,
-        dim: "主线 / 漫游",
-        axis: "main",
-        text: "进入一个游戏后，我通常会优先推进主任务或核心目标。"
-      },
-      {
-        id: 10,
-        dim: "主线 / 漫游",
-        axis: "wander",
-        text: "我很容易被支线、地图角落、收集点或路上的随机内容吸引走。"
-      },
-      {
-        id: 11,
-        dim: "主线 / 漫游",
-        axis: "main",
-        text: "我更喜欢有明确方向地一步步完成内容，而不是到处随意逛。"
-      },
-      {
-        id: 12,
-        dim: "主线 / 漫游",
-        axis: "wander",
-        text: "哪怕主线还没推进多少，我也常常先把周边能探索的东西玩一遍。"
-      },
-      {
-        id: 13,
-        dim: "即兴 / 谋略",
-        axis: "improv",
-        text: "玩游戏时，我经常先上手再说，边玩边适应。"
-      },
-      {
-        id: 14,
-        dim: "即兴 / 谋略",
-        axis: "strategy",
-        text: "面对任务、战斗或养成系统时，我会习惯先想清楚路线和资源安排。"
-      },
-      {
-        id: 15,
-        dim: "即兴 / 谋略",
-        axis: "improv",
-        text: "遇到突发情况时，我通常更相信自己的临场感觉和即时反应。"
-      },
-      {
-        id: 16,
-        dim: "即兴 / 谋略",
-        axis: "strategy",
-        text: "我很享受提前研究机制、搭配方案或规划后续玩法的过程。"
-      }
+      { id: 1, axis: "experience", text: "比起尽快通关或变强，我更在意游戏过程是否让我觉得有趣、沉浸。" },
+      { id: 2, axis: "goal", text: "玩游戏时，我通常会很在意任务完成、战力成长或阶段成果。" },
+      { id: 3, axis: "experience", text: "即使奖励不高，只要某段剧情、场景或互动体验让我喜欢，我也愿意花时间停留。" },
+      { id: 4, axis: "goal", text: "我更容易因为“还有目标没达成”而继续玩，而不是单纯因为享受当下过程。" },
+
+      { id: 5, axis: "solo", text: "大多数时候，我更喜欢按自己的节奏一个人玩游戏。" },
+      { id: 6, axis: "group", text: "如果有合适的搭子或队友，我会觉得一起玩比自己玩更有意思。" },
+      { id: 7, axis: "solo", text: "遇到新内容时，我通常更想先自己摸索，而不是立刻和别人一起推进。" },
+      { id: 8, axis: "group", text: "对我来说，游戏中的陪伴感、配合感或一起经历某件事，本身就是乐趣来源。" },
+
+      { id: 9, axis: "main", text: "进入一个游戏后，我通常会优先推进主任务或核心目标。" },
+      { id: 10, axis: "wander", text: "我很容易被支线、地图角落、收集点或路上的随机内容吸引走。" },
+      { id: 11, axis: "main", text: "我更喜欢有明确方向地一步步完成内容，而不是到处随意逛。" },
+      { id: 12, axis: "wander", text: "哪怕主线还没推进多少，我也常常先把周边能探索的东西玩一遍。" },
+
+      { id: 13, axis: "improv", text: "玩游戏时，我经常先上手再说，边玩边适应。" },
+      { id: 14, axis: "strategy", text: "面对任务、战斗或养成系统时，我会习惯先想清楚路线和资源安排。" },
+      { id: 15, axis: "improv", text: "遇到突发情况时，我通常更相信自己的临场感觉和即时反应。" },
+      { id: 16, axis: "strategy", text: "我很享受提前研究机制、搭配方案或规划后续玩法的过程。" }
     ];
 
     const options = [
@@ -624,3 +559,199 @@
         traits: ["耐心", "稳妥", "照顾型", "体验组织者"]
       },
       "体验-共行-漫游-即兴": {
+        name: "乐子人",
+        desc: "游戏对他们来说首先是快乐的现场。喜欢和朋友一起乱逛、整活、尝试各种意想不到的玩法，在互动中制造即时乐趣。",
+        traits: ["活跃", "松弛", "好玩", "氛围制造者"]
+      },
+      "体验-共行-漫游-谋略": {
+        name: "筑梦师",
+        desc: "喜欢与他人共同创造独特体验，比如建造、组织活动、设计玩法、营造空间与氛围。相比单纯完成任务，更在意共同创造什么。",
+        traits: ["有想法", "善组织", "重创造", "社群体验型"]
+      }
+    };
+
+    let currentIndex = 0;
+    let answers = [];
+    let scores = {};
+
+    function getInitialScores() {
+      return {
+        experience: 0,
+        goal: 0,
+        solo: 0,
+        group: 0,
+        main: 0,
+        wander: 0,
+        improv: 0,
+        strategy: 0
+      };
+    }
+
+    function startTest() {
+      currentIndex = 0;
+      answers = new Array(questions.length).fill(null);
+      scores = getInitialScores();
+
+      document.getElementById("homeScreen").classList.add("hidden");
+      document.getElementById("resultScreen").classList.add("hidden");
+      document.getElementById("quizScreen").classList.remove("hidden");
+
+      renderQuestion();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function renderQuestion() {
+      const q = questions[currentIndex];
+      document.getElementById("progressText").innerText = `第 ${currentIndex + 1} 题 / 共 ${questions.length} 题`;
+      document.getElementById("qBadge").innerText = `题目 ${q.id}`;
+      document.getElementById("questionText").innerText = q.text;
+      document.getElementById("progressInner").style.width = `${(currentIndex / questions.length) * 100}%`;
+
+      const wrap = document.getElementById("optionsWrap");
+      wrap.innerHTML = "";
+
+      options.forEach((op, idx) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "option-btn";
+
+        if (answers[currentIndex] && answers[currentIndex].value === op.value) {
+          btn.classList.add("selected");
+        }
+
+        btn.innerHTML = `<span class="option-label">${idx + 1}.</span>${op.label}`;
+        btn.onclick = function () {
+          selectAnswer(op.value);
+        };
+
+        wrap.appendChild(btn);
+      });
+
+      const prevBtn = document.getElementById("prevBtn");
+      prevBtn.style.display = "inline-flex";
+      prevBtn.disabled = currentIndex === 0;
+    }
+
+    function selectAnswer(value) {
+      const q = questions[currentIndex];
+
+      if (answers[currentIndex]) {
+        scores[q.axis] -= answers[currentIndex].value;
+      }
+
+      answers[currentIndex] = {
+        id: q.id,
+        axis: q.axis,
+        value: value
+      };
+
+      scores[q.axis] += value;
+
+      if (currentIndex < questions.length - 1) {
+        currentIndex++;
+        renderQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function goPrev() {
+      if (currentIndex <= 0) return;
+      currentIndex--;
+      renderQuestion();
+    }
+
+    function showResult() {
+      const expScore = scores.experience;
+      const goalScore = scores.goal;
+      const soloScore = scores.solo;
+      const groupScore = scores.group;
+      const mainScore = scores.main;
+      const wanderScore = scores.wander;
+      const improvScore = scores.improv;
+      const strategyScore = scores.strategy;
+
+      const dim1 = expScore >= goalScore ? "体验" : "目标";
+      const dim2 = soloScore >= groupScore ? "独行" : "共行";
+      const dim3 = mainScore >= wanderScore ? "主线" : "漫游";
+      const dim4 = improvScore >= strategyScore ? "即兴" : "谋略";
+
+      const key = `${dim1}-${dim2}-${dim3}-${dim4}`;
+      const result = resultMap[key];
+
+      document.getElementById("quizScreen").classList.add("hidden");
+      document.getElementById("resultScreen").classList.remove("hidden");
+
+      document.getElementById("resultName").innerText = result.name;
+      document.getElementById("resultType").innerText = `${dim1} × ${dim2} × ${dim3} × ${dim4}`;
+      document.getElementById("resultDesc").innerText = result.desc;
+
+      document.getElementById("resultDims").innerHTML = `
+        体验（${expScore}） / 目标（${goalScore}）<br>
+        独行（${soloScore}） / 共行（${groupScore}）<br>
+        主线（${mainScore}） / 漫游（${wanderScore}）<br>
+        即兴（${improvScore}） / 谋略（${strategyScore}）
+      `;
+
+      const tagWrap = document.getElementById("resultTags");
+      tagWrap.innerHTML = "";
+      result.traits.forEach(tag => {
+        const span = document.createElement("span");
+        span.className = "tag";
+        span.innerText = tag;
+        tagWrap.appendChild(span);
+      });
+
+      renderDimensionChart([
+        { leftLabel: "体验", rightLabel: "目标", leftScore: expScore, rightScore: goalScore, winner: dim1 },
+        { leftLabel: "独行", rightLabel: "共行", leftScore: soloScore, rightScore: groupScore, winner: dim2 },
+        { leftLabel: "主线", rightLabel: "漫游", leftScore: mainScore, rightScore: wanderScore, winner: dim3 },
+        { leftLabel: "即兴", rightLabel: "谋略", leftScore: improvScore, rightScore: strategyScore, winner: dim4 }
+      ]);
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function renderDimensionChart(dimensions) {
+      const chart = document.getElementById("dimensionChart");
+      chart.innerHTML = "";
+
+      dimensions.forEach(item => {
+        const total = item.leftScore + item.rightScore;
+        const leftPercent = total > 0 ? (item.leftScore / total) * 100 : 50;
+        const rightPercent = total > 0 ? (item.rightScore / total) * 100 : 50;
+
+        const row = document.createElement("div");
+        row.className = "dim-row";
+
+        row.innerHTML = `
+          <div class="dim-head">
+            <strong>${item.leftLabel} / ${item.rightLabel}</strong>
+            <span class="dim-score">${item.leftScore} : ${item.rightScore}</span>
+          </div>
+          <div class="bar-wrap">
+            <div class="bar-label">${item.leftLabel}</div>
+            <div class="bar-track">
+              <div class="bar-fill-left" style="width: ${leftPercent}%;"></div>
+              <div class="bar-fill-right" style="width: ${rightPercent}%;"></div>
+              <div class="bar-center-line"></div>
+            </div>
+            <div class="bar-label">${item.rightLabel}</div>
+          </div>
+          <div class="dim-note">当前倾向：<b>${item.winner}</b></div>
+        `;
+
+        chart.appendChild(row);
+      });
+    }
+
+    function restartTest() {
+      document.getElementById("resultScreen").classList.add("hidden");
+      document.getElementById("homeScreen").classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    scores = getInitialScores();
+  </script>
+</body>
+</html>
