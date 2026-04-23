@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>测测你的游戏人格</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+      background: linear-gradient(180deg, #0f1220 0%, #171b2f 100%);
+      color: #fff;
+      min-height: 100vh;
+    }
+    .container {
+      width: 100%;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+    }
+    .card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 24px;
+      padding: 28px 22px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.28);
+      backdrop-filter: blur(10px);
+    }
+    .title {
+      font-size: 34px;
+      font-weight: 800;
+      line-height: 1.2;
+      text-align: center;
+      margin: 8px 0 12px;
+    }
+    .subtitle {
+      text-align: center;
+      color: rgba(255,255,255,0.78);
+      font-size: 15px;
+      line-height: 1.8;
+      margin-bottom: 24px;
+    }
+    .desc-list {
+      margin: 0;
+      padding-left: 18px;
+      color: rgba(255,255,255,0.88);
+      line-height: 1.9;
+      font-size: 15px;
+    }
+    .btn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      min-width: 150px;
+      height: 48px;
+      border: none;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #7c5cff, #49a6ff);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .18s ease, opacity .18s ease;
+      padding: 0 22px;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .center { text-align: center; }
+    .hidden { display: none; }
+
+    .progress-wrap {
+      margin-bottom: 18px;
+    }
+    .progress-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 8px;
+    }
+    .progress-bar {
+      width: 100%;
+      height: 10px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress-inner {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #7c5cff, #49a6ff);
+      border-radius: 999px;
+      transition: width .25s ease;
+    }
+
+    .q-badge {
+      display: inline-block;
+      font-size: 13px;
+      font-weight: 700;
+      color: #cfc8ff;
+      background: rgba(124,92,255,0.16);
+      border: 1px solid rgba(124,92,255,0.35);
+      padding: 6px 12px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+    }
+    .question {
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1.55;
+      margin-bottom: 24px;
+    }
+
+    .options {
+      display: grid;
+      gap: 12px;
+    }
+    .option-btn {
+      width: 100%;
+      text-align: left;
+      padding: 16px 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: #fff;
+      cursor: pointer;
+      transition: all .18s ease;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    .option-btn:hover {
+      border-color: rgba(124,92,255,0.6);
+      background: rgba(124,92,255,0.14);
+    }
+    .option-label {
+      font-weight: 800;
+      color: #cfc8ff;
+      margin-right: 8px;
+    }
+
+    .result-title {
+      font-size: 14px;
+      letter-spacing: 1px;
+      color: #b7b7d7;
+      text-align: center;
+      margin-top: 4px;
+      margin-bottom: 8px;
+    }
+    .result-name {
+      font-size: 40px;
+      font-weight: 900;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .result-type {
+      text-align: center;
+      font-size: 15px;
+      color: rgba(255,255,255,0.78);
+      margin-bottom: 22px;
+      line-height: 1.8;
+    }
+    .result-block {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+    .result-block h3 {
+      margin: 0 0 10px;
+      font-size: 16px;
+      color: #d7d2ff;
+    }
+    .result-block p {
+      margin: 0;
+      color: rgba(255,255,255,0.9);
+      line-height: 1.9;
+      font-size: 15px;
+    }
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .tag {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(73,166,255,0.14);
+      border: 1px solid rgba(73,166,255,0.3);
+      color: #dbeeff;
+      font-size: 14px;
+    }
+
+    .footer {
+      text-align: center;
+      color: rgba(255,255,255,0.45);
+      font-size: 12px;
+      margin-top: 22px;
+    }
+
+    @media (max-width: 640px) {
+      .title { font-size: 28px; }
+      .question { font-size: 22px; }
+      .result-name { font-size: 32px; }
+      .card { padding: 22px 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- 首页 -->
+    <section id="homeScreen" class="card">
+      <div class="title">测测你的游戏人格</div>
+      <div class="subtitle">
+        通过 <b>体验 / 目标</b>、<b>独行 / 共行</b>、<b>主线 / 漫游</b>、<b>即兴 / 谋略</b><br>
+        四个维度，看看你属于哪一种游戏人格。
+      </div>
+
+      <ul class="desc-list">
+        <li>本测试共 16 题，每题请根据你的真实游戏习惯作答。</li>
+        <li>请按第一直觉选择，不必反复斟酌。</li>
+        <li>测试结果仅用于趣味参考，并不代表能力高低。</li>
+        <li>建议选择你“大多数时候”的游戏状态，而不是个别情况。</li>
+      </ul>
+
+      <div class="center" style="margin-top: 28px;">
+        <button class="btn" onclick="startTest()">开始测试</button>
+      </div>
+
+      <div class="footer">本测试仅供娱乐</div>
+    </section>
+
+    <!-- 答题页 -->
+    <section id="quizScreen" class="card hidden">
+      <div class="progress-wrap">
+        <div class="progress-top">
+          <span id="progressText">第 1 题 / 共 16 题</span>
+          <span id="dimText">维度：体验 / 目标</span>
+        </div>
+        <div class="progress-bar">
+          <div id="progressInner" class="progress-inner"></div>
+        </div>
+      </div>
+
+      <div id="qBadge" class="q-badge">题目 1</div>
+      <div id="questionText" class="question"></div>
+
+      <div class="options" id="optionsWrap"></div>
+    </section>
+
+    <!-- 结果页 -->
+    <section id="resultScreen" class="card hidden">
+      <div class="result-title">你的游戏人格是</div>
+      <div id="resultName" class="result-name"></div>
+      <div id="resultType" class="result-type"></div>
+
+      <div class="result-block">
+        <h3>人格画像</h3>
+        <p id="resultDesc"></p>
+      </div>
+
+      <div class="result-block">
+        <h3>典型特征</h3>
+        <div id="resultTags" class="tag-list"></div>
+      </div>
+
+      <div class="result-block">
+        <h3>你的四维结果</h3>
+        <p id="resultDims"></p>
+      </div>
+
+      <div class="center" style="margin-top: 24px;">
+        <button class="btn" onclick="restartTest()">重新测试</button>
+      </div>
+
+      <div class="footer">copyright@向世界的尽头-</div>
+    </section>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        id: 1,
+        dim: "体验 / 目标",
+        axis: "experience",
+        text: "比起尽快通关或变强，我更在意游戏过程是否让我觉得有趣、沉浸。"
+      },
+      {
+        id: 2,
+        dim: "体验 / 目标",
+        axis: "goal",
+        text: "玩游戏时，我通常会很在意任务完成、战力成长或阶段成果。"
+      },
+      {
+        id: 3,
+        dim: "体验 / 目标",
+        axis: "experience",
+        text: "即使奖励不高，只要某段剧情、场景或互动体验让我喜欢，我也愿意花时间停留。"
+      },
+      {
+        id: 4,
+        dim: "体验 / 目标",
+        axis: "goal",
+        text: "我更容易因为“还有目标没达成”而继续玩，而不是单纯因为享受当下过程。"
+      },
+      {
+        id: 5,
+        dim: "独行 / 共行",
+        axis: "solo",
+        text: "大多数时候，我更喜欢按自己的节奏一个人玩游戏。"
+      },
+      {
+        id: 6,
+        dim: "独行 / 共行",
+        axis: "group",
+        text: "如果有合适的搭子或队友，我会觉得一起玩比自己玩更有意思。"
+      },
+      {
+        id: 7,
+        dim: "独行 / 共行",
+        axis: "solo",
+        text: "遇到新内容时，我通常更想先自己摸索，而不是立刻和别人一起推进。"
+      },
+      {
+        id: 8,
+        dim: "独行 / 共行",
+        axis: "group",
+        text: "对我来说，游戏中的陪伴感、配合感或一起经历某件事，本身就是乐趣来源。"
+      },
+      {
+        id: 9,
+        dim: "主线 / 漫游",
+        axis: "main",
+        text: "进入一个游戏后，我通常会优先推进主任务或核心目标。"
+      },
+      {
+        id: 10,
+        dim: "主线 / 漫游",
+        axis: "wander",
+        text: "我很容易被支线、地图角落、收集点或路上的随机内容吸引走。"
+      },
+      {
+        id: 11,
+        dim: "主线 / 漫游",
+        axis: "main",
+        text: "我更喜欢有明确方向地一步步完成内容，而不是到处随意逛。"
+      },
+      {
+        id: 12,
+        dim: "主线 / 漫游",
+        axis: "wander",
+        text: "哪怕主线还没推进多少，我也常常先把周边能探索的东西玩一遍。"
+      },
+      {
+        id: 13,
+        dim: "即兴 / 谋略",
+        axis: "improv",
+        text: "玩游戏时，我经常先上手再说，边玩边适应。"
+      },
+      {
+        id: 14,
+        dim: "即兴 / 谋略",
+        axis: "strategy",
+        text: "面对任务、战斗或养成系统时，我会习惯先想清楚路线和资源安排。"
+      },
+      {
+        id: 15,
+        dim: "即兴 / 谋略",
+        axis: "improv",
+        text: "遇到突发情况时，我通常更相信自己的临场感觉和即时反应。"
+      },
+      {
+        id: 16,
+        dim: "即兴 / 谋略",
+        axis: "strategy",
+        text: "我很享受提前研究机制、搭配方案或规划后续玩法的过程。"
+      }
+    ];
+
+    const options = [
+      { label: "非常不符合", value: 1 },
+      { label: "比较不符合", value: 2 },
+      { label: "一般 / 不确定", value: 3 },
+      { label: "比较符合", value: 4 },
+      { label: "非常符合", value: 5 }
+    ];
+
+    const resultMap = {
+      "目标-独行-主线-即兴": {
+        name: "破阵者",
+        desc: "偏好直接推进核心目标，习惯独自完成挑战，不喜欢被过多干扰。面对任务时往往先行动再调整，依靠临场反应和执行力快速突破关卡。",
+        traits: ["快", "直接", "敢上手", "重通关"]
+      },
+      "目标-独行-主线-谋略": {
+        name: "速通客",
+        desc: "重视效率与结果，习惯独自规划完整路线。进入游戏后往往先研究机制、资源与流程，再用最优方式完成目标。",
+        traits: ["高效", "理性", "规划强", "目标明确"]
+      },
+      "目标-独行-漫游-即兴": {
+        name: "赏金猎人",
+        desc: "虽然重视收益与完成度，但并不拘泥于唯一推进路线。会凭直觉四处行动、顺手清理任务与资源，在自由移动中不断获得成果。",
+        traits: ["灵活", "主动", "扫荡式推进", "行动导向"]
+      },
+      "目标-独行-漫游-谋略": {
+        name: "清道夫",
+        desc: "喜欢把地图、任务与资源系统性地整理干净。虽然游玩路径较自由，但内在目标非常明确，常通过精细规划追求全收集或高完成度。",
+        traits: ["完整", "细致", "强迫症式推进", "全局掌控"]
+      },
+      "目标-共行-主线-即兴": {
+        name: "先锋刃",
+        desc: "喜欢与他人共同完成明确目标，在团队推进中倾向冲在前面。擅长快速响应、执行和补位，是典型的攻坚型玩家。",
+        traits: ["冲锋", "果断", "带节奏", "团队行动派"]
+      },
+      "目标-共行-主线-谋略": {
+        name: "指挥官",
+        desc: "重视团队结果，擅长在合作环境中统筹节奏、分配任务、安排路线。更享受“把一局打明白、把一队带起来”的成就感。",
+        traits: ["组织力强", "规划清晰", "擅长协作推进", "全局意识强"]
+      },
+      "目标-共行-漫游-即兴": {
+        name: "游骑兵",
+        desc: "在多人环境中行动灵活，哪里需要就去哪里。虽然不执着固定路径，但始终围绕目标行动，擅长随机应变地帮助团队完成任务。",
+        traits: ["灵活", "机动", "适应快", "实用型协作者"]
+      },
+      "目标-共行-漫游-谋略": {
+        name: "大管家",
+        desc: "偏好在多人环境中统筹资源与进度，虽然游玩范围较广，但始终围绕整体收益思考。适合承担组织、筹备、协调一类的位置。",
+        traits: ["稳定", "全面", "擅管理", "重整体发展"]
+      },
+      "体验-独行-主线-即兴": {
+        name: "戏中人",
+        desc: "更容易把自己代入游戏世界之中，喜欢跟随故事推进感受角色命运。做决定时常凭当下感受与情绪反应，不太执着绝对最优。",
+        traits: ["代入强", "感受型", "顺着剧情走", "情绪驱动"]
+      },
+      "体验-独行-主线-谋略": {
+        name: "读卷人",
+        desc: "在意故事本身，也愿意认真梳理世界设定、剧情逻辑与角色关系。常带着理解与分析去推进内容，希望完整读懂作品。",
+        traits: ["细腻", "投入", "重理解", "剧情研究型"]
+      },
+      "体验-独行-漫游-即兴": {
+        name: "吟游诗人",
+        desc: "喜欢随兴停留在游戏世界的各个角落，不急着推进任务，更在意风景、氛围、偶遇与小发现。游玩节奏松弛，重在感受。",
+        traits: ["自由", "浪漫", "沉浸感强", "风景党倾向"]
+      },
+      "体验-独行-漫游-谋略": {
+        name: "巡礼者",
+        desc: "喜欢探索世界，也愿意有意识地规划自己的探索路径。不是为了效率而规划，而是为了更完整、更有层次地体验整个游戏世界。",
+        traits: ["安静", "深入", "探索型", "体验完整度高"]
+      },
+      "体验-共行-主线-即兴": {
+        name: "同游者",
+        desc: "重视一起玩的过程与气氛，适合陪伴式推进。对他们来说，内容本身固然重要，但“和谁一起经历”往往更重要。",
+        traits: ["好相处", "重氛围", "投入互动", "搭子型玩家"]
+      },
+      "体验-共行-主线-谋略": {
+        name: "引路人",
+        desc: "喜欢带着别人一起体验优质内容，愿意为了共同体验而安排路线、控制节奏、照顾同伴感受。既有分享欲，也有引导力。",
+        traits: ["耐心", "稳妥", "照顾型", "体验组织者"]
+      },
+      "体验-共行-漫游-即兴": {
+        name: "乐子人",
+        desc: "游戏对他们来说首先是快乐的现场。喜欢和朋友一起乱逛、整活、尝试各种意想不到的玩法，在互动中制造即时乐趣。",
+        traits: ["活跃", "松弛", "好玩", "氛围制造者"]
+      },
+      "体验-共行-漫游-谋略": {
+        name: "筑梦师",
+        desc: "喜欢与他人共同创造独特体验，比如建造、组织活动、设计玩法、营造空间与氛围。相比单纯完成任务，更在意共同创造什么。",
+        traits: ["有想法", "善组织", "重创造", "社群体验型"]
+      }
+    };
+
+    let currentIndex = 0;
+    let answers = [];
+    let scores = {
+      experience: 0,
+      goal: 0,
+      solo: 0,
+      group: 0,
+      main: 0,
+      wander: 0,
+      improv: 0,
+      strategy: 0
+    };
+
+    function startTest() {
+      document.getElementById("homeScreen").classList.add("hidden");
+      document.getElementById("resultScreen").classList.add("hidden");
+      document.getElementById("quizScreen").classList.remove("hidden");
+
+      currentIndex = 0;
+      answers = [];
+      scores = {
+        experience: 0,
+        goal: 0,
+        solo: 0,
+        group: 0,
+        main: 0,
+        wander: 0,
+        improv: 0,
+        strategy: 0
+      };
+
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const q = questions[currentIndex];
+      document.getElementById("progressText").innerText = `第 ${currentIndex + 1} 题 / 共 ${questions.length} 题`;
+      document.getElementById("dimText").innerText = `维度：${q.dim}`;
+      document.getElementById("qBadge").innerText = `题目 ${q.id}`;
+      document.getElementById("questionText").innerText = q.text;
+      document.getElementById("progressInner").style.width = `${((currentIndex) / questions.length) * 100}%`;
+
+      const wrap = document.getElementById("optionsWrap");
+      wrap.innerHTML = "";
+
+      options.forEach((op, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "option-btn";
+        btn.innerHTML = `<span class="option-label">${idx + 1}.</span>${op.label}`;
+        btn.onclick = () => selectAnswer(op.value);
+        wrap.appendChild(btn);
+      });
+    }
+
+    function selectAnswer(value) {
+      const q = questions[currentIndex];
+      answers.push({ id: q.id, axis: q.axis, value });
+      scores[q.axis] += value;
+
+      currentIndex++;
+
+      if (currentIndex < questions.length) {
+        renderQuestion();
+      } else {
+        document.getElementById("progressInner").style.width = `100%`;
+        showResult();
+      }
+    }
+
+    function showResult() {
+      const dim1 = scores.experience >= scores.goal ? "体验" : "目标";
+      const dim2 = scores.solo >= scores.group ? "独行" : "共行";
+      const dim3 = scores.main >= scores.wander ? "主线" : "漫游";
+      const dim4 = scores.improv >= scores.strategy ? "即兴" : "谋略";
+
+      const key = `${dim1}-${dim2}-${dim3}-${dim4}`;
+      const result = resultMap[key];
+
+      document.getElementById("quizScreen").classList.add("hidden");
+      document.getElementById("resultScreen").classList.remove("hidden");
+
+      document.getElementById("resultName").innerText = result.name;
+      document.getElementById("resultType").innerHTML = `${dim1} × ${dim2} × ${dim3} × ${dim4}`;
+      document.getElementById("resultDesc").innerText = result.desc;
+      document.getElementById("resultDims").innerHTML = `
+        你的结果倾向为：<br>
+        <b>${dim1}</b> / ${dim1 === "体验" ? "目标" : "体验"}<br>
+        <b>${dim2}</b> / ${dim2 === "独行" ? "共行" : "独行"}<br>
+        <b>${dim3}</b> / ${dim3 === "主线" ? "漫游" : "主线"}<br>
+        <b>${dim4}</b> / ${dim4 === "即兴" ? "谋略" : "即兴"}
+      `;
+
+      const tagWrap = document.getElementById("resultTags");
+      tagWrap.innerHTML = "";
+      result.traits.forEach(tag => {
+        const span = document.createElement("span");
+        span.className = "tag";
+        span.innerText = tag;
+        tagWrap.appendChild(span);
+      });
+    }
+
+    function restartTest() {
+      document.getElementById("resultScreen").classList.add("hidden");
+      document.getElementById("homeScreen").classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  </script>
+</body>
+</html>
